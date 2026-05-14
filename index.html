@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alley's Portfolio</title>
     <link rel="stylesheet" href="assets/css/styles.css">
+    <style>
+        .weather-card {
+            background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+            color: white;
+            padding: 24px 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(76, 175, 80, 0.25);
+            max-width: 380px;
+            margin: 24px auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+        .weather-card__icon {
+            font-size: 3.75em;
+            line-height: 1;
+        }
+        .weather-card__body {
+            flex: 1;
+        }
+        .weather-card__label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            opacity: 0.9;
+            margin: 0 0 6px;
+        }
+        .weather-card__temp {
+            font-size: 2.25em;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1;
+        }
+        .weather-card__desc {
+            font-size: 0.95em;
+            margin: 6px 0 0;
+            opacity: 0.95;
+        }
+        .weather-card--muted {
+            background: #eaeaea;
+            color: #666;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -23,6 +68,14 @@
         <section class="intro">
             <h2>Hi, I'm Alley</h2>
             <p>I am a passionate designer dedicated to creating beautiful and functional designs. Explore my work and get to know me better!</p>
+        </section>
+        <section class="weather-card" id="weather-card" aria-live="polite">
+            <div class="weather-card__icon" id="weather-icon">🌤️</div>
+            <div class="weather-card__body">
+                <p class="weather-card__label">Houston, TX</p>
+                <p class="weather-card__temp" id="weather-temp">—</p>
+                <p class="weather-card__desc" id="weather-desc">Loading weather…</p>
+            </div>
         </section>
         <section class="featured-projects">
             <h2>Featured Projects</h2>
@@ -47,5 +100,74 @@
         <p>&copy; 2023 Alley. All rights reserved.</p>
     </footer>
     <script src="assets/js/script.js"></script>
+    <script>
+        (function () {
+            var card = document.getElementById('weather-card');
+            var iconEl = document.getElementById('weather-icon');
+            var tempEl = document.getElementById('weather-temp');
+            var descEl = document.getElementById('weather-desc');
+
+            var codeMap = {
+                0:  { emoji: '☀️',  desc: 'Clear sky' },
+                1:  { emoji: '🌤️', desc: 'Mainly clear' },
+                2:  { emoji: '⛅',  desc: 'Partly cloudy' },
+                3:  { emoji: '☁️',  desc: 'Overcast' },
+                45: { emoji: '🌫️', desc: 'Fog' },
+                48: { emoji: '🌫️', desc: 'Freezing fog' },
+                51: { emoji: '🌦️', desc: 'Light drizzle' },
+                53: { emoji: '🌦️', desc: 'Drizzle' },
+                55: { emoji: '🌧️', desc: 'Heavy drizzle' },
+                56: { emoji: '🌧️', desc: 'Freezing drizzle' },
+                57: { emoji: '🌧️', desc: 'Freezing drizzle' },
+                61: { emoji: '🌧️', desc: 'Light rain' },
+                63: { emoji: '🌧️', desc: 'Rain' },
+                65: { emoji: '🌧️', desc: 'Heavy rain' },
+                66: { emoji: '🌧️', desc: 'Freezing rain' },
+                67: { emoji: '🌧️', desc: 'Freezing rain' },
+                71: { emoji: '🌨️', desc: 'Light snow' },
+                73: { emoji: '🌨️', desc: 'Snow' },
+                75: { emoji: '🌨️', desc: 'Heavy snow' },
+                77: { emoji: '❄️',  desc: 'Snow grains' },
+                80: { emoji: '🌦️', desc: 'Rain showers' },
+                81: { emoji: '🌧️', desc: 'Rain showers' },
+                82: { emoji: '🌧️', desc: 'Heavy showers' },
+                85: { emoji: '🌨️', desc: 'Snow showers' },
+                86: { emoji: '🌨️', desc: 'Heavy snow showers' },
+                95: { emoji: '⛈️',  desc: 'Thunderstorm' },
+                96: { emoji: '⛈️',  desc: 'Thunderstorm w/ hail' },
+                99: { emoji: '⛈️',  desc: 'Thunderstorm w/ hail' }
+            };
+
+            function showMuted(icon, message) {
+                card.classList.add('weather-card--muted');
+                iconEl.textContent = icon;
+                tempEl.textContent = '';
+                descEl.textContent = message;
+            }
+
+            function fetchWeather(lat, lon) {
+                var url = 'https://api.open-meteo.com/v1/forecast'
+                    + '?latitude=' + lat
+                    + '&longitude=' + lon
+                    + '&current=temperature_2m,weather_code'
+                    + '&temperature_unit=fahrenheit';
+                fetch(url)
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        var t = Math.round(data.current.temperature_2m);
+                        var code = data.current.weather_code;
+                        var info = codeMap[code] || { emoji: '🌡️', desc: 'Weather' };
+                        iconEl.textContent = info.emoji;
+                        tempEl.textContent = t + '°F';
+                        descEl.textContent = info.desc;
+                    })
+                    .catch(function () {
+                        showMuted('⚠️', 'Weather unavailable right now');
+                    });
+            }
+
+            fetchWeather(29.7604, -95.3698);
+        })();
+    </script>
 </body>
 </html>
