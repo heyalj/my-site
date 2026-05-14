@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background: #4CAF50;
+    background: #6B2A75;
     color: white;
     padding: 20px 0;
     text-align: center;
@@ -50,7 +50,7 @@ section {
 footer {
     text-align: center;
     padding: 10px 0;
-    background: #4CAF50;
+    background: #6B2A75;
     color: white;
     position: relative;
     bottom: 0;
@@ -70,7 +70,7 @@ form input, form textarea {
 }
 
 form button {
-    background: #4CAF50;
+    background: #6B2A75;
     color: white;
     border: none;
     padding: 10px;
@@ -79,5 +79,5 @@ form button {
 }
 
 form button:hover {
-    background: #45a049;
+    background: #5A1F63;
 }
