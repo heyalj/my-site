@@ -81,3 +81,66 @@ form button {
 form button:hover {
     background: #5A1F63;
 }
+
+.weather-card {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    background: white;
+    color: #333;
+    padding: 14px 18px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    width: 230px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Arial', sans-serif;
+}
+
+.weather-card__icon {
+    font-size: 2.5em;
+    line-height: 1;
+}
+
+.weather-card__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.weather-card__label {
+    color: #6B2A75;
+    font-size: 0.65em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.weather-card__temp {
+    font-size: 1.75em;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1;
+    color: #333;
+}
+
+.weather-card__desc {
+    font-size: 0.85em;
+    margin: 4px 0 0;
+    color: #666;
+}
+
+.weather-card--muted {
+    background: #f5f5f5;
+}
+
+@media (max-width: 600px) {
+    .weather-card {
+        position: static;
+        margin: 16px auto;
+        width: auto;
+        max-width: 360px;
+    }
+}
